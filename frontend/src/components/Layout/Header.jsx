@@ -4,7 +4,7 @@ import styles from "../../styles/styles";
 import { Link } from "react-router-dom";
 import Navbar from "../Layout/Navbar";
 
-const Header = ({ activeHeading }) => {
+const Header = ({ active }) => {
   const [dropdownActive, setDropdownActive] = useState(false);
 
   window.addEventListener("scroll", () => {
@@ -28,7 +28,7 @@ const Header = ({ activeHeading }) => {
           </Link>
         </div>
         {/*The navitems */}
-<Navbar active={activeHeading} />
+<Navbar active={3} />
 
 
 <div className="relative">
