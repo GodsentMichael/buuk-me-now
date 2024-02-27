@@ -1,19 +1,18 @@
 import React from 'react' 
 import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HomePage } from './Routes'
 
 const App = () => {
   
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <div>
-          <h1 className='text-blue-500'>
-            Welcome to the Buuk-me-now app
-          </h1>
-        </div>
-      </header>
-    </div>
+   <BrowserRouter>
+   <Routes>
+      <Route path="/" element={<HomePage />} />
+   </Routes>
+
+   </BrowserRouter>
   )
 }
 
