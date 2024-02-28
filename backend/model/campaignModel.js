@@ -12,7 +12,7 @@ const campaignSchema = new mongoose.Schema({
   },
   targetGroup: {
     type: String,
-    enum: ['All Customers', 'Male Customers', 'Female Customers'],
+    enum: ['all', 'male', 'female'],
     required: true
   },
 }, {

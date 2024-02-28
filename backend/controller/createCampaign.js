@@ -24,7 +24,23 @@ exports.createCampaign = catchAsyncErrors(async (req, res, next) => {
         success: true,
         campaign,
       });
+      console.log("Campaign created successfully=>", campaign);
     } catch (error) {
-      next(error);
+        console.log("Server error=>", error.message);
+      return next(new ErrorHandler(error.message, 500));
+    }
+  });
+
+  exports.getCampaigns = catchAsyncErrors(async (req, res, next) => {
+    try {
+      const campaigns = await Campaign.find();
+  
+      res.status(200).json({
+        success: true,
+        campaigns,
+      });
+    } catch (error) {
+        console.log("Server error=>", error.message);
+      return next(new ErrorHandler(error.message, 500));
     }
   });

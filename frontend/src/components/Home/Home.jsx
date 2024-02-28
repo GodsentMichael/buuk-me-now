@@ -1,27 +1,61 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../../styles/styles'
 import Pagination from '../Pagination'
 import { server } from "../../server";
 import axios from 'axios'
 
 const Home = () => {
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    targetGroup: 'all'
+  });
+
+  const [campaigns, setCampaigns] = useState([]);
 
   const toggleModal = () => {
-    setShowModal(!showModal)
-  }
+    setShowModal(!showModal);
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
 
   const handleCreateCampaign = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    setLoading(true);
     try {
-      const response = await axios.post(`${server}/campaign/create`,{
-        title, description, targetGroup
-      }, {withCredentials: true} )
-      console.log("Campaign created successfully=>", response.data)
+      const response = await axios.post(`${server}/campaign/create`, formData);
+      console.log('Campaign created successfully=>', response.data);
+      setFormData({
+        title: '',
+        description: '',
+        targetGroup: 'all'
+      });
     } catch (error) {
-      
+      console.error('Error creating campaign=>', error);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
+
+  useEffect(() => {
+    const fetchCampaigns = async () => {
+      try {
+        const response = await axios.get(`${server}/campaign/get`);
+        console.log('All Campaigns=>', response.data);
+        setCampaigns(response.data.campaigns);
+      } catch (error) {
+        console.error('Error fetching campaigns=>', error);
+      }
+    }
+    fetchCampaigns()
+  }, [])
 
 
   return (
@@ -60,32 +94,63 @@ const Home = () => {
         {/* The Create Campaign Modal */}
         {showModal && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg shadow-md w-[500px] h-[600px]">
-            <div className='flex'>
-            <img src="/src/assets/campaign-black.png" alt="campaign icon" className='h-6 w-6 mr-2'  /> 
-            <h2 className="text-xl font-semibold mb-4">Create a Campaign</h2>
+          <div className="bg-white p-8 rounded-lg shadow-md w-[500px] h-[600px] relative">
+          <button className="absolute top-4 right-4 text-gray-500 hover:text-gray-800" onClick={toggleModal}>
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+            <div className="flex">
+              <img src="/src/assets/campaign-black.png" alt="campaign icon" className="h-6 w-6 mr-2" />
+              <h2 className="text-xl font-semibold mb-4">Create a Campaign</h2>
             </div>
-            <form className=' space-y-9' onSubmit={handleCreateCampaign}>
+            <form className="space-y-9" onSubmit={handleCreateCampaign}>
               <div className="mb-4">
-                <h4 className="text-lg font-normal ">Campaign Title</h4>
-                <input type="text" className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-300" />
+                <h4 className="text-lg font-normal">Campaign Title</h4>
+                <input
+                  type="text"
+                  name="title"
+                  placeholder='Write your campaign title here'
+                  value={formData.title}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-300"
+                />
               </div>
-              
+
               <div className="mb-4">
                 <h4 className="text-lg font-normal">Description</h4>
-                <textarea className="w-full h-[150px] border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-300" />
+                <textarea
+                  name="description"
+                  placeholder='Write your message here'
+                  value={formData.description}
+                  onChange={handleChange}
+                  className="w-full h-[150px] border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-300"
+                />
               </div>
-              
+
               <div className="mb-9">
                 <h4 className="text-lg font-normal pb-2">Target Group</h4>
-                <select className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-300">
+                <select
+                  name="targetGroup"
+                  placeholder='Select your target group'
+                  value={formData.targetGroup}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-300"
+                >
+                  <option value="Target group">Select your target group</option>
                   <option value="all">All Customers</option>
                   <option value="male">Male Customers</option>
                   <option value="female">Female Customers</option>
                 </select>
               </div>
-              
-              <button type="submit" className="py-2 px-4 bg-[#004741] w-full text-white font-Roboto rounded-md">Submit your campaign</button>
+
+              <button
+                type="submit"
+                className="py-2 px-4 bg-[#004741] w-full text-white font-Roboto rounded-md"
+                disabled={loading}
+              >
+                {loading ? 'Creating...' : 'Submit your campaign'}
+              </button>
             </form>
           </div>
         </div>
@@ -102,74 +167,16 @@ const Home = () => {
             </tr>
           </thead>
           <tbody className='bg-[#FFFFFF]'>
-            <tr className='border'>
-              <td className=" px-4 py-2">Mobile app coming soon</td>
-              <td className=" px-4 py-2">Lorem ipsum dolor sit amet consectetur. Diam phasellus ut nisl dol...</td>
-              <td className=" px-4 py-2">All customers</td>
-              <td className=" px-4 py-2">Active</td>
-            </tr>
-            <tr className='border'>
-              <td className=" px-4 py-2">Mobile app coming soon</td>
-              <td className=" px-4 py-2">Lorem ipsum dolor sit amet consectetur. Diam phasellus ut nisl dol...</td>
-              <td className=" px-4 py-2">All customers</td>
-              <td className=" px-4 py-2">Active</td>
-            </tr>
-            <tr className='border'>
-              <td className=" px-4 py-2">Mobile app coming soon</td>
-              <td className=" px-4 py-2">Lorem ipsum dolor sit amet consectetur. Diam phasellus ut nisl dol...</td>
-              <td className=" px-4 py-2">All customers</td>
-              <td className=" px-4 py-2">Active</td>
-            </tr>
-            <tr className='border'>
-              <td className=" px-4 py-2">Mobile app coming soon</td>
-              <td className=" px-4 py-2">Lorem ipsum dolor sit amet consectetur. Diam phasellus ut nisl dol...</td>
-              <td className=" px-4 py-2">All customers</td>
-              <td className=" px-4 py-2">Inactive</td>
-            </tr>
-            <tr className='border'>
-              <td className=" px-4 py-2">Mobile app coming soon</td>
-              <td className=" px-4 py-2">Lorem ipsum dolor sit amet consectetur. Diam phasellus ut nisl dol...</td>
-              <td className=" px-4 py-2">All customers</td>
-              <td className=" px-4 py-2">Inactive</td>
-            </tr>
-            <tr className='border'>
-              <td className=" px-4 py-2">Mobile app coming soon</td>
-              <td className=" px-4 py-2">Lorem ipsum dolor sit amet consectetur. Diam phasellus ut nisl dol...</td>
-              <td className=" px-4 py-2">All customers</td>
-              <td className=" px-4 py-2">Inactive</td>
-            </tr>
-            <tr className='border'>
-              <td className=" px-4 py-2">Mobile app coming soon</td>
-              <td className=" px-4 py-2">Lorem ipsum dolor sit amet consectetur. Diam phasellus ut nisl dol...</td>
-              <td className=" px-4 py-2">All customers</td>
-              <td className=" px-4 py-2">Inactive</td>
-            </tr>
-            <tr className='border'>
-              <td className=" px-4 py-2">Mobile app coming soon</td>
-              <td className=" px-4 py-2">Lorem ipsum dolor sit amet consectetur. Diam phasellus ut nisl dol...</td>
-              <td className=" px-4 py-2">All customers</td>
-              <td className=" px-4 py-2">Active</td>
-            </tr>
-            <tr className='border'>
-              <td className=" px-4 py-2">Mobile app coming soon</td>
-              <td className=" px-4 py-2">Lorem ipsum dolor sit amet consectetur. Diam phasellus ut nisl dol...</td>
-              <td className=" px-4 py-2">All customers</td>
-              <td className=" px-4 py-2">Active</td>
-            </tr>
-            <tr className='border'>
-              <td className=" px-4 py-2">Mobile app coming soon</td>
-              <td className=" px-4 py-2">Lorem ipsum dolor sit amet consectetur. Diam phasellus ut nisl dol...</td>
-              <td className=" px-4 py-2">All customers</td>
-              <td className=" px-4 py-2">Inactive</td>
-            </tr>
-            <tr className='border'>
-              <td className=" px-4 py-2">Mobile app coming soon</td>
-              <td className=" px-4 py-2">Lorem ipsum dolor sit amet consectetur. Diam phasellus ut nisl dol...</td>
-              <td className=" px-4 py-2">All customers</td>
-              <td className=" px-4 py-2">Inactive</td>
-            </tr>
-        
-          </tbody>
+
+            {campaigns.map((campaign)=> (
+              <tr key={campaign._id} className='border'>
+              <td className=" px-4 py-2">{campaign.title}</td>
+              <td className=" px-4 py-2">{campaign.description}</td>
+              <td className=" px-4 py-2">{campaign.targetGroup}</td>
+              <td className=" px-4 py-2">{campaign.status}</td>
+              </tr>
+            ))}
+            </tbody>
         </table>
 
       </section>
