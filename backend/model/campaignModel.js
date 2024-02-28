@@ -12,9 +12,14 @@ const campaignSchema = new mongoose.Schema({
   },
   targetGroup: {
     type: String,
-    enum: ['all', 'male', 'female'],
+    enum: ['All Customers', 'Male Customers', 'Female Customers'],
     required: true
   },
+  campaignStatus:{
+    type: String,
+    enum: ['Active', 'Inactive'],
+    default: 'Active'
+  }
 }, {
   timestamps: true
 });
