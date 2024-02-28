@@ -1,12 +1,26 @@
 import React, { useState } from 'react'
 import styles from '../../styles/styles'
 import Pagination from '../Pagination'
+import { server } from "../../server";
+import axios from 'axios'
 
 const Home = () => {
   const [showModal, setShowModal] = useState(false)
 
   const toggleModal = () => {
     setShowModal(!showModal)
+  }
+
+  const handleCreateCampaign = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await axios.post(`${server}/campaign/create`,{
+        title, description, targetGroup
+      }, {withCredentials: true} )
+      console.log("Campaign created successfully=>", response.data)
+    } catch (error) {
+      
+    }
   }
 
 
@@ -51,7 +65,7 @@ const Home = () => {
             <img src="/src/assets/campaign-black.png" alt="campaign icon" className='h-6 w-6 mr-2'  /> 
             <h2 className="text-xl font-semibold mb-4">Create a Campaign</h2>
             </div>
-            <form className=' space-y-9'>
+            <form className=' space-y-9' onSubmit={handleCreateCampaign}>
               <div className="mb-4">
                 <h4 className="text-lg font-normal ">Campaign Title</h4>
                 <input type="text" className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-300" />

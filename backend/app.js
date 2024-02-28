@@ -3,7 +3,7 @@ const app = express();
 const ErrorHandler = require('./middlewares/error')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
-// const user = require('./routes/user')
+const campaign = require('./routes/campaign')
 const cors = require("cors");
 const dotenv = require("dotenv").config()
 
@@ -32,7 +32,7 @@ app.use("/test", (req, res) => {
   });
 
 // Import Routes
-// app.use("/api/v1/user", user)
+app.use("/api/v1/campaign", campaign)
 
 
 // Error Handling
