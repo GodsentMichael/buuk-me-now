@@ -18,10 +18,10 @@ const Header = ({ active }) => {
         <div>
           <Link to="/">
             <img
-              src="/src/assets/book-me-logo.png"
+              src="/assets/book-me-logo.png"
               className="bg-transparent h-12"
               alt="logo"
-              style={{ width: "130px", height: "auto"}}
+              style={{ width: "130px", height }}
             />
           </Link>
         </div>
