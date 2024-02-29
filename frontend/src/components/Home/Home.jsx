@@ -14,6 +14,8 @@ const Home = () => {
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [campaigns, setCampaigns] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -26,8 +28,14 @@ const Home = () => {
     });
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   const handleSearch = () => {
-    console.log("Searching for:", searchQuery);
+    // console.log("Searching for:", searchQuery);
     const filteredCampaigns = campaigns.filter(campaign =>
       campaign.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -40,7 +48,7 @@ const Home = () => {
     setLoading(true);
     try {
       const response = await axios.post(`${server}/campaign/create`, formData);
-      console.log("Campaign created successfully=>", response.data);
+      // console.log("Campaign created successfully=>", response.data);
       setFormData({
         title: "",
         description: "",
@@ -58,18 +66,46 @@ const Home = () => {
       const response = await axios.get(`${server}/campaign/get`, {
         params: {
           search: searchQuery,
+          page: currentPage,
         },
       });
-      console.log("All Campaigns=>", response.data);
+      // console.log("All Campaigns=>", response.data);
       setCampaigns(response.data.campaigns);
+      setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error("Error fetching campaigns=>", error);
     }
   };
 
+  const fetchPaginatedCampaigns = async () => {
+    try {
+      const response = await axios.get(`${server}/campaign/get-paginated`, {
+        params: {
+          search: searchQuery,
+          page: currentPage,
+        },
+      });
+      // console.log("Paginated Campaigns=>", response.data);
+      setCampaigns(response.data.campaigns);
+      setTotalPages(response.data.totalPages);
+    } catch (error) {
+      console.error("Error fetching paginated campaigns=>", error);
+    }
+  };
+  
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+
+  useEffect(() =>{
+    fetchPaginatedCampaigns();
+  }, [searchQuery, currentPage])
+
   useEffect(() => {
     fetchCampaigns();
-  }, [searchQuery]);
+  }, [searchQuery, currentPage]);
 
   return (
     <>
@@ -95,13 +131,14 @@ const Home = () => {
       <section
         className={` ${styles.section} flex items-center justify-between  gap-8 py-4 px-2 bg-gray-100 rounded-md`}
       >
-        <div className="w-2/3 space-x-2">
+        <div className="md:w-2/3 space-x-2">
           <input
             type="text"
-            className="w-2/3 py-2 px-4 border border-white-300 rounded-md focus:outline-none focus:border-blue-500"
-            placeholder="Search customer log by customer name, email address & phone number"
+            className="md:w-2/3 py-2 px-4 border border-white-300 rounded-md focus:outline-none focus:border-blue-500"
+            placeholder="Search campaigns by campaign title..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
           <button
             className=" py-2 px-4 bg-[#FFFFFF] font-Roboto font-bold text-[#004741] rounded-md"
@@ -206,42 +243,36 @@ const Home = () => {
         </div>
       )}
 
-      <section
-        className={` ${styles.section} flex flex-col items-start mt-6 space-y-3 overflow-hidden py-2 px-2`}
-      >
-        <table className="w-full table-auto border-collapse px-4 py-4 ">
-          <thead className="bg-gray-100 border rounded-md">
-            <tr className="">
-              <th className="text-start justify-start px-4 py-2">
-                Campaign Title
-              </th>
-              <th className="text-start justify-start px-4 py-2">
-                Description
-              </th>
-              <th className="text-start justify-start px-4 py-2">
-                Target Group
-              </th>
-              <th className="text-start justify-start px-4 py-2">
-                Campaign Status
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-[#FFFFFF]">
-            {campaigns.map((campaign) => (
-              <tr key={campaign._id} className="border">
-                <td className=" px-4 py-2">{campaign.title}</td>
-                <td className=" px-4 py-2">{campaign.description}</td>
-                <td className=" px-4 py-2">{campaign.targetGroup}</td>
-                <td className=" px-4 py-2">{campaign.campaignStatus}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+<section className={` ${styles.section} flex flex-col items-start mt-6 space-y-3 overflow-hidden py-2 pr-4 pl-3 px-2 sm:`}>
+  <div className="overflow-x-auto w-full">
+    <table className="w-full table-auto border-collapse px-4 py-4 ">
+      <thead className="bg-gray-100 border rounded-md">
+        <tr className="">
+          <th className="text-start justify-start px-4 py-2">Campaign Title</th>
+          <th className="text-start justify-start px-4 py-2">Description</th>
+          <th className="text-start justify-start px-4 py-2">Target Group</th>
+          <th className="text-start justify-start px-4 py-2">Campaign Status</th>
+        </tr>
+      </thead>
+      <tbody className="bg-[#FFFFFF]">
+        {campaigns.map((campaign) => (
+          <tr key={campaign._id} className="border">
+            <td className="px-4 py-2">{campaign.title}</td>
+            <td className="px-4 py-2">{campaign.description}</td>
+            <td className="px-4 py-2">{campaign.targetGroup}</td>
+            <td className="px-4 py-2">{campaign.campaignStatus}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</section>
 
-      {/* Pagination */}
-      <section className={`${styles.section} flex justify-end items-end pt-4`}>
-        <Pagination />
+
+
+   {/* Pagination */}
+   <section className={`${styles.section} flex justify-end items-end pt-4 pb-6`}>
+        <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
       </section>
     </>
   );
