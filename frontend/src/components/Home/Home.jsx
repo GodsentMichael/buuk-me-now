@@ -112,53 +112,52 @@ const Home = () => {
       <section
         className={` ${styles.section} flex flex-col items-start mt-6 space-y-3`}
       >
-        <h3 className="text-3xl font-bold">Customers</h3>
-        <p className="text-lg">See all your customers in one place</p>
+        <h3 className="md:text-3xl font-bold">Customers</h3>
+        <p className="md:text-lg">See all your customers in one place</p>
       </section>
 
       <section
         className={` ${styles.section} flex flex-col items-start mt-6 space-y-3`}
       >
         <div className="flex items-center">
-          <h3 className="text-2xl font-thin mr-4">Customer Log</h3>
+          <h3 className="md:text-2xl font-thin mr-4">Customer Log</h3>
           <div className="relative">
-            <h3 className="text-2xl mr-4">Campaigns</h3>
+            <h3 className="md:text-2xl mr-4">Campaigns</h3>
             <div className="  bottom-0 left-0.8 w-full h-1 bg-black"></div>
           </div>
         </div>
       </section>
 
-      <section
-        className={` ${styles.section} flex items-center justify-between  gap-8 py-4 px-2 bg-gray-100 rounded-md`}
-      >
-        <div className="md:w-2/3 space-x-2">
-          <input
-            type="text"
-            className="md:w-2/3 py-2 px-4 border border-white-300 rounded-md focus:outline-none focus:border-blue-500"
-            placeholder="Search campaigns by campaign title..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <button
-            className=" py-2 px-4 bg-[#FFFFFF] font-Roboto font-bold text-[#004741] rounded-md"
-            onClick={handleSearch}
-          >
-            Search
-          </button>
-        </div>
-        <button
-          className=" py-2 px-4 bg-[#004741] text-white font-Roboto flex items-center justify-center rounded-md"
-          onClick={toggleModal}
-        >
-          <img
-            src="/src/assets/campaign.png"
-            alt="campaign icon"
-            className="h-6 w-6 mr-2"
-          />
-          Create a campaign
-        </button>
-      </section>
+<section className={` ${styles.section} flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8 py-4 px-2 bg-gray-100 rounded-md`}>
+  <div className="md:w-2/3 flex md:flex-row  md:space-y-0 md:space-x-2">
+    <input
+      type="text"
+      className="w-full md:w-2/3 py-1 px-4 border border-white-300 rounded-md focus:outline-none focus:border-green-500"
+      placeholder="Search campaigns by campaign title..."
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+      onKeyDown={handleKeyDown}
+    />
+    <button
+      className="py-1 px-4 bg-[#FFFFFF] font-Roboto font-bold text-[#004741] rounded-md md:w-auto"
+      onClick={handleSearch}
+    >
+      Search
+    </button>
+  </div>
+  <button
+    className="py-2 px-4 bg-[#004741] text-white font-Roboto flex items-center justify-center rounded-md md:w-auto mt-4 md:mt-0"
+    onClick={toggleModal}
+  >
+    <img
+      src="/src/assets/campaign.png"
+      alt="campaign icon"
+      className="h-6 w-6 mr-2"
+    />
+    Create a campaign
+  </button>
+</section>
+
 
       {/* The Create Campaign Modal */}
       {showModal && (
