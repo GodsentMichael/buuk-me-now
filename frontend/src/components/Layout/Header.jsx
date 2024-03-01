@@ -31,37 +31,33 @@ const Header = ({ active }) => {
         </div>
          
         {/*The navitems */}
-        <div className="hidden md:flex">
-          <button className="button flex  items-center border p-2 px-4 rounded-md w-auto">
-            <div className="flex flex-col">
-              <span className="font-bold">
-                Buukmenow Demo
-              </span>
-              <span className="text-xs text-gray-500">Buukmenow@gmail.com</span>
-            </div>
-            <span className="space w-2"></span>
-            <AiOutlineDown
-              className="cursor-pointer mt-1"
-              onClick={() => setDropdownActive(!dropdownActive)}
-            />
-          </button>
-          {dropdownActive && (
-            <>
-            <div className="absolute top-full left-0 mt-1 bg-white border rounded shadow-md">
-              <Link to="/demo-1" className="block px-4 py-2 hover:bg-gray-100">
-                Demo 1
-              </Link>
-              <Link to="/demo-2" className="block px-4 py-2 hover:bg-gray-100">
-                Demo 2
-              </Link>
-              <Link to="/demo-3" className="block px-4 py-2 hover:bg-gray-100">
-                Demo 3
-              </Link>
-            </div>
-            </>
-          
-          )}
-        </div>
+        {/*The navitems */}
+<div className="hidden md:flex relative">
+  <button className="button flex items-center border p-2 px-4 rounded-md w-auto" onClick={() => setDropdownActive(!dropdownActive)}>
+    <div className="flex flex-col">
+      <span className="font-bold">
+        Buukmenow Demo
+      </span>
+      <span className="text-xs text-gray-500">Buukmenow@gmail.com</span>
+    </div>
+    <span className="space w-2"></span>
+    <AiOutlineDown className="cursor-pointer mt-1" />
+  </button>
+  {dropdownActive && (
+    <div className="absolute top-full left-0 mt-1 bg-white border rounded shadow-md">
+      <Link to="/demo-1" className="block px-4 py-2 hover:bg-gray-100">
+        Demo 1
+      </Link>
+      <Link to="/demo-2" className="block px-4 py-2 hover:bg-gray-100">
+        Demo 2
+      </Link>
+      <Link to="/demo-3" className="block px-4 py-2 hover:bg-gray-100">
+        Demo 3
+      </Link>
+    </div>
+  )}
+</div>
+
         <div className="md:hidden">
           <button className="button flex items-center border p-2 px-4 rounded-md w-auto" onClick={toggleMenu}>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
