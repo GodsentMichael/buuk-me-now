@@ -17,7 +17,7 @@ app.use(cookieParser());
 // CORS
 app.use(cors({
     // origin: 'http://localhost:5173',
-    origin: 'https://buuk-me-now-delta.vercel.app/',
+    origin: 'https://buuk-me-now-delta.vercel.app',
     credentials: true
   }));
 
