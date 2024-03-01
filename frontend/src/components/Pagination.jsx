@@ -19,7 +19,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
         className={`rounded-full h-8 w-8 flex items-center justify-center bg-gray-200 cursor-pointer ${currentPage === 1 ? 'opacity-50' : ''}`}
         onClick={handlePrevPage}
       >
-        <img src="/assets/arrow-left.png" alt="Left Arrow" className="h-7 w-7" /> 
+        <img src="/src/assets/arrow-left.png" alt="Left Arrow" className="h-7 w-7" /> 
       </div>
     
       {Array.from({ length: 3 }, (_, i) => (
@@ -44,7 +44,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
         className={`rounded-full h-8 w-8 flex items-center justify-center bg-gray-200 cursor-pointer ${currentPage === totalPages ? 'opacity-50' : ''}`}
         onClick={handleNextPage}
       >
-        <img src="/assets/arrow.png" alt="Right Arrow" className="h-7 w-7" /> 
+        <img src="/src/assets/arrow.png" alt="Right Arrow" className="h-7 w-7" /> 
       </div>
     </div>
   );

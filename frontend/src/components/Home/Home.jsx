@@ -150,7 +150,7 @@ const Home = () => {
     onClick={toggleModal}
   >
     <img
-      src="/assets/campaign.png"
+      src="/src/assets/campaign.png"
       alt="campaign icon"
       className="h-6 w-6 mr-2"
     />
@@ -184,7 +184,7 @@ const Home = () => {
             </button>
             <div className="flex">
               <img
-                src="/assets/campaign-black.png"
+                src="/src/assets/campaign-black.png"
                 alt="campaign icon"
                 className="h-6 w-6 mr-2"
               />

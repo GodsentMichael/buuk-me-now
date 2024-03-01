@@ -18,15 +18,15 @@ const Header = ({ active }) => {
         <div>
           <Link to="/">
             <img
-              src="/assets/book-me-logo.png"
+              src="/src/assets/book-me-logo.png"
               className="bg-transparent h-12"
               alt="logo"
               style={{ width: "130px", height: "auto" }}
             />
           </Link>
         </div>
-        <div className="hidden md:block">
-        <Navbar active={active}/>
+        <div className="hidden md:block ">
+        <Navbar className="bg-gray-200 text-black shadow-lg" active={active} />
         </div>
          
         {/*The navitems */}
