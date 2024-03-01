@@ -18,7 +18,8 @@ const Header = ({ active }) => {
         <div>
           <Link to="/">
             <img
-              src="/src/assets/book-me-logo.png"
+              // src="/src/assets/book-me-logo.png"
+              src="https://res.cloudinary.com/dye76dtzn/image/upload/v1709289427/book-me-logo_dcptce.png"
               className="bg-transparent h-12"
               alt="logo"
               style={{ width: "130px", height: "auto" }}

@@ -150,7 +150,7 @@ const Home = () => {
     onClick={toggleModal}
   >
     <img
-      src="/src/assets/campaign.png"
+      src="https://res.cloudinary.com/dye76dtzn/image/upload/v1709289428/campaign_r4epja.png"
       alt="campaign icon"
       className="h-6 w-6 mr-2"
     />
@@ -184,7 +184,7 @@ const Home = () => {
             </button>
             <div className="flex">
               <img
-                src="/src/assets/campaign-black.png"
+                src="https://res.cloudinary.com/dye76dtzn/image/upload/v1709289427/campaign-black_tsvfve.png"
                 alt="campaign icon"
                 className="h-6 w-6 mr-2"
               />
