@@ -21,7 +21,7 @@ const Header = ({ active }) => {
               src="/assets/book-me-logo.png"
               className="bg-transparent h-12"
               alt="logo"
-              style={{ width: "130px", height }}
+              style={{ width: "130px", height: "auto" }}
             />
           </Link>
         </div>
